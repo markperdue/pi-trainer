@@ -22,6 +22,14 @@ function resultBlockStyled($errors,$successes){
 	}
 }
 
+function wrap_text_with_tags( $haystack, $needle , $beginning_tag, $end_tag ) {
+    $needle_start = stripos($haystack, $needle);
+    $needle_end = $needle_start + strlen($needle);
+    $return_string = substr($haystack, 0, $needle_start) . $beginning_tag . $needle . $end_tag . substr($haystack, $needle_end);
+    
+    return $return_string;
+}
+
 function do_pi($guess_full) {
 	global $successes;
 	global $errors;
@@ -43,7 +51,8 @@ function do_pi($guess_full) {
 		// Check if the input length is divisible by 5
 		if ($i % 5 === 0) {
 			// Add the next 5 digits
-			$trainer_length = $i + 5;
+			$k = 5;
+			$trainer_length = $i + $k;
 		}
 		else {
 			// Keep adding 1 until the result is divisible by 5
@@ -103,11 +112,17 @@ function do_pi($guess_full) {
 			$chunks_remaining = $segment_count - (($j - 1) * (35/5));
 			if ($chunks_remaining <= 7) {
 				$data = substr($pi_digits, ($j - 1) * 35, $chunks_remaining * 5);
+				
+				// Final line. Set an offset to work backwards from
+				$ending = True;
 			}
 			else {
 				// There will be another line
 				$data = substr($pi_digits, ($j - 1) * 35, 35);
 			}
+			
+			// Bold the string
+			$return_string = wrap_text_with_tags( $data , $data , "<strong>" ,"</strong>");
 
 			// Add a space after every 5th character
 			$str = chunk_split($data, 5, ' ');
@@ -120,8 +135,16 @@ function do_pi($guess_full) {
 			else {
 				$prefix = "&nbsp;&nbsp;";
 			}
-
-			$successes[] = "<pre>$prefix$str</pre>";
+			
+			// Count backwards from end of string - $k and bold that section
+			if ($ending) {
+				$correct = substr(trim($str), 0, -$k);
+				$trainer = substr(trim($str), -$k);
+				$successes[] = "<pre>$prefix<strong>$correct</strong>$trainer</pre>";
+			}
+			else {
+				$successes[] = "<pre>$prefix<strong>$str</strong></pre>";
+			}
 		}
 	}
 	else {
