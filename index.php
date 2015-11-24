@@ -1,6 +1,30 @@
 <?php
+
+// Lovely pi
+$pi_digits = 
+  "14159265358979323846264338327950288419716939937510"
+. "58209749445923078164062862089986280348253421170679"
+. "82148086513282306647093844609550582231725359408128"
+. "48111745028410270193852110555964462294895493038196"
+. "44288109756659334461284756482337867831652712019091"
+. "45648566923460348610454326648213393607260249141273"
+. "72458700660631558817488152092096282925409171536436"
+. "78925903600113305305488204665213841469519415116094"
+. "33057270365759591953092186117381932611793105118548"
+. "07446237996274956735188575272489122793818301194912"
+. "98336733624406566430860213949463952247371907021798"
+. "60943702770539217176293176752384674818467669405132"
+. "00056812714526356082778577134275778960917363717872"
+. "14684409012249534301465495853710507922796892589235"
+. "42019956112129021960864034418159813629774771309960"
+. "51870721134999999837297804995105973173281609631859"
+. "50244594553469083026425223082533446850352619311881"
+. "71010003137838752886587533208381420617177669147303"
+. "59825349042875546873115956286388235378759375195778"
+. "18577805321712268066130019278766111959092164201989";
+
 function resultBlockStyled($errors,$successes){
-	//Error block
+	// Error block
 	if(count($errors) > 0) {
 		echo "<div id='alerts-error'>
 		<ul>";
@@ -10,7 +34,7 @@ function resultBlockStyled($errors,$successes){
 		echo "</ul>";
 		echo "</div>";
 	}
-	//Success block
+	// Success block
 	if(count($successes) > 0) {
 		echo "<div id='alerts-success'>
 		<ul>";
@@ -33,9 +57,8 @@ function wrap_text_with_tags( $haystack, $needle , $beginning_tag, $end_tag ) {
 function do_pi($guess_full) {
 	global $successes;
 	global $errors;
-
-	$pi_digits = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989";
-
+	global $pi_digits;
+	
 	// Strip off the leading '3.' value of the entered guess
 	if (substr($guess_full, 0, 2) === "3." && strlen($guess_full) > 2) {
 		$guess_digits = substr($guess_full, 2);
@@ -66,6 +89,8 @@ function do_pi($guess_full) {
 
 		// New pi value the user should train for
 		$trainer_value = substr($pi_digits, 0, $trainer_length);
+		
+		$congratulatory2 = "Ya right!";
 
 		// Create some congratulatory strings
 		if ($i >= 1000) {
@@ -99,8 +124,6 @@ function do_pi($guess_full) {
 		// Determine how many segments we need
 		$segment_count = ceil($trainer_length / 5);
 		$segment_count_lines = ceil($segment_count / 7);
-
-		//$successes[] = "there are $segment_count segments over $segment_count_lines lines";
 
 		// If there are more than 7 segments, print multiple lines
 		for ($j=1; $j<=$segment_count_lines; $j++) {
@@ -180,22 +203,22 @@ function do_pi($guess_full) {
 		</div>
 
         <div>
-			<form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
-				<ul>
-					<div class="section-label">Pi Trainer</div>
-					<div id="content">
+        	<div class="section-label">Pi Trainer</div>
+			<div id="content">
+				<form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+					<ul>
 						<li>
 							<span>&nbsp;Enter as many digits of pi as you can!</span><br/>
-							<input class="long" type="text" name="pi" placeholder="Enter as many digits of pi as you can!" value="3." maxlength="1002" />
+							<input class="long" type="text" name="pi" placeholder="Enter as many digits of pi as you can!" value="3." maxlength="1002">
 						</li>
 						<li>
-							<input type="submit" id="submit-button" name="submit" value="Check" />
+							<input type="submit" id="submit-button" name="submit" value="Check">
 						</li>
-					</div>
-				</ul>
-			</form>
+					</ul>
+				</form>
+			</div>
 		</div>
-    </div>
+	</div>
 	<div id="footer">
     	<span id="footer-span">Powered by <a href="http://www.righteousbanana.com" target="_blank">RighteousBanana</a>.</span>
 	</div>
