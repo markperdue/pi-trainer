@@ -1,6 +1,7 @@
 <?php
 
-// Lovely pi
+
+// Globals
 $pi_digits = 
   "14159265358979323846264338327950288419716939937510"
 . "58209749445923078164062862089986280348253421170679"
@@ -22,6 +23,9 @@ $pi_digits =
 . "71010003137838752886587533208381420617177669147303"
 . "59825349042875546873115956286388235378759375195778"
 . "18577805321712268066130019278766111959092164201989";
+$errors = [];
+$successes = [];
+
 
 function resultBlockStyled($errors,$successes){
 	// Error block
@@ -191,6 +195,7 @@ function do_pi($guess_full) {
     <?php
 	if (isset($_POST['submit'])) {
 		// Continue only if there are no errors
+		global $errors;
 		if (count($errors) === 0) {
 			do_pi($_POST['pi']);
 		}
@@ -199,7 +204,7 @@ function do_pi($guess_full) {
 
 	<div id="content-wide">
 		<div id="alerts-container">
-			<?php echo resultBlockStyled($errors,$successes); ?>
+			<?php global $errors; global $successes; echo resultBlockStyled($errors,$successes); ?>
 		</div>
 
         <div>
