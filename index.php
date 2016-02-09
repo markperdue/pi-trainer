@@ -2,7 +2,7 @@
 
 
 // Globals
-$pi_digits = 
+$pi_digits =
   "14159265358979323846264338327950288419716939937510"
 . "58209749445923078164062862089986280348253421170679"
 . "82148086513282306647093844609550582231725359408128"
@@ -50,11 +50,35 @@ function resultBlockStyled($errors,$successes){
 	}
 }
 
+function resultSuccesses($successes){
+	if(count($successes) > 0) {
+		echo "<div id='alerts-success'>
+		<ul>";
+		foreach($successes as $success) {
+			echo "<li>".$success."</li>";
+		}
+		echo "</ul>";
+		echo "</div>";
+	}
+}
+
+function resultErrors($errors){
+	if(count($errors) > 0) {
+		echo "<div id='alerts-error'>
+		<ul>";
+		foreach($errors as $error) {
+			echo "<li>".$error."</li>";
+		}
+		echo "</ul>";
+		echo "</div>";
+	}
+}
+
 function wrap_text_with_tags( $haystack, $needle , $beginning_tag, $end_tag ) {
     $needle_start = stripos($haystack, $needle);
     $needle_end = $needle_start + strlen($needle);
     $return_string = substr($haystack, 0, $needle_start) . $beginning_tag . $needle . $end_tag . substr($haystack, $needle_end);
-    
+
     return $return_string;
 }
 
@@ -62,7 +86,7 @@ function do_pi($guess_full) {
 	global $successes;
 	global $errors;
 	global $pi_digits;
-	
+
 	// Strip off the leading '3.' value of the entered guess
 	if (substr($guess_full, 0, 2) === "3." && strlen($guess_full) > 2) {
 		$guess_digits = substr($guess_full, 2);
@@ -93,7 +117,7 @@ function do_pi($guess_full) {
 
 		// New pi value the user should train for
 		$trainer_value = substr($pi_digits, 0, $trainer_length);
-		
+
 		$congratulatory2 = "Ya right!";
 
 		// Create some congratulatory strings
@@ -139,7 +163,7 @@ function do_pi($guess_full) {
 			$chunks_remaining = $segment_count - (($j - 1) * (35/5));
 			if ($chunks_remaining <= 7) {
 				$data = substr($pi_digits, ($j - 1) * 35, $chunks_remaining * 5);
-				
+
 				// Final line. Set an offset to work backwards from
 				$ending = True;
 			}
@@ -147,7 +171,7 @@ function do_pi($guess_full) {
 				// There will be another line
 				$data = substr($pi_digits, ($j - 1) * 35, 35);
 			}
-			
+
 			// Bold the string
 			$return_string = wrap_text_with_tags( $data , $data , "<strong>" ,"</strong>");
 
@@ -162,9 +186,9 @@ function do_pi($guess_full) {
 			else {
 				$prefix = "&nbsp;&nbsp;";
 			}
-			
+
 			// Count backwards from end of string - $k and bold that section
-			if ($ending) {
+			if (isset($ending)) {
 				$correct = substr(trim($str), 0, -$k);
 				$trainer = substr(trim($str), -$k);
 				$successes[] = "<pre>$prefix<strong>$correct</strong>$trainer</pre>";
@@ -204,7 +228,16 @@ function do_pi($guess_full) {
 
 	<div id="content-wide">
 		<div id="alerts-container">
-			<?php global $errors; global $successes; echo resultBlockStyled($errors,$successes); ?>
+			<?php
+				global $errors;
+				global $successes;
+				if (isset($errors)) {
+					echo resultSuccesses($successes);
+				}
+				if (isset($successes)) {
+					echo resultErrors($errors);
+				}
+			?>
 		</div>
 
         <div>
@@ -225,7 +258,7 @@ function do_pi($guess_full) {
 		</div>
 	</div>
 	<div id="footer">
-    	<span id="footer-span">Powered by <a href="http://www.righteousbanana.com" target="_blank">RighteousBanana</a>.</span>
+    	<span id="footer-span">Powered by <a href="https://www.righteousbanana.com" target="_blank">RighteousBanana</a>.</span>
 	</div>
 </body>
 </html>
